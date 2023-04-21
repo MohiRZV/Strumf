@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private static string TAG = "PlayerMovement";
+    //private static string TAG = "PlayerMovement";
     private Rigidbody2D rb;
     private BoxCollider2D coll;
 
     [SerializeField] private LayerMask jumpableGround;
     [SerializeField] private float jumpForce = 14f;
-    [SerializeField] private float walkSpeed = 5f;
+    [SerializeField] private float walkSpeed = 7f;
     float dirX = 0f;
     private Animator anim;
 
@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(TAG + " Start");
+        //Debug.Log(TAG + " # Start");
 
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
             rb.transform.position = new Vector2(0, 0.2f);
             rb.transform.rotation = new Quaternion(0, 0, 0, 0);
         }
-        
+
         // set the input horizontal axis raw value
         dirX = Input.GetAxisRaw("Horizontal");
         // move the player corresponding to the horizontal axis input, based on its walkspeed
