@@ -8,9 +8,21 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D coll;
 
+    [SerializeField] private bool enableKeyboardMovement = false;
     [SerializeField] private LayerMask jumpableGround;
     [SerializeField] private float jumpForce = 14f;
     [SerializeField] private float walkSpeed = 7f;
+    [SerializeField] private Vector3 startPoint = new Vector3(-14f, 0f, -9f);
+    [SerializeField] private Vector3 checkPoint1;
+    [SerializeField] private Vector3 checkPoint2;
+    [SerializeField] private Vector3 checkPoint3;
+
+    private Vector3[] checkpoints;
+    private int checkpointCount; 
+    private int nextCheckpoint = 1;
+    [SerializeField] private bool advanceToNextCheckpoint = false;
+
+
     float dirX = 0f;
     private Animator anim;
 
@@ -32,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         coll = GetComponent<BoxCollider2D>();
+        transform.position = startPoint;
+        checkpoints = new Vector3[]{startPoint, checkPoint1, checkPoint2, checkPoint3};
+        checkpointCount = checkpoints.Length;
     }
 
     // Update is called once per frame
@@ -44,18 +59,36 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // set the input horizontal axis raw value
-        dirX = Input.GetAxisRaw("Horizontal");
+        if(enableKeyboardMovement) {
+            dirX = Input.GetAxisRaw("Horizontal");
+        } else {
+            dirX = getMovementDir();
+        }
+
         // move the player corresponding to the horizontal axis input, based on its walkspeed
         rb.velocity = new Vector2(dirX * walkSpeed, rb.velocity.y);
 
         // when pressing the Jump button
-        if (Input.GetButtonDown("Jump") && isGrounded()) 
+        if (enableKeyboardMovement && Input.GetButtonDown("Jump") && isGrounded()) 
         {
             // move the player on the vertical axis by its jumpForce
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
         UpdateAnimation(dirX);
+    }
+
+    private float getMovementDir() {
+        if (advanceToNextCheckpoint) {
+            if (transform.position.x - checkpoints[nextCheckpoint].x > 0) {//checkpoint reached
+                transform.position = new Vector3(checkpoints[nextCheckpoint].x, transform.position.y, transform.position.z);
+                nextCheckpoint++;
+                advanceToNextCheckpoint = false;
+            } else {
+                return 1f;
+            }
+        }
+        return 0f;
     }
 
     private void UpdateAnimation(float dirX) {

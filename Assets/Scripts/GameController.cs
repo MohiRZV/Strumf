@@ -18,6 +18,11 @@ public class GameController : MonoBehaviour
         Strawberry,
         Apple,
         RipeApple,
+        BoatPartSquare,
+        BoatPartCircle,
+        BoatPartTriangle,
+        Boat,
+        Junk,
         None
     }
 
