@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour
     private int junkWinCnd = 2;
     private bool reachedEnd = false;
 
+    public CSVWriter csvWriter = new CSVWriter();
+
     [SerializeField] Text winText;
     [SerializeField] Text instructionText;
     [SerializeField] GameObject player;
@@ -89,11 +91,13 @@ public class GameController : MonoBehaviour
             setInstruction("L-ai gasit pe prietenul tau! Felicitari!");
             player.transform.parent = null;
             player.transform.position = new Vector3(51f, 2f, 9f);
+            reachedEnd = true;
         }
         
         if (ripeAppleCollected== -1 && boatPartsPlaced == -1 && junkCollected == -1 && reachedEnd) {
             winText.text = "GG, esti un stroomph!";
             winText.enabled = true;
+            onFinish();
         }
     }
 
@@ -131,5 +135,22 @@ public class GameController : MonoBehaviour
 
     private void setInstruction(string text) {
         instructionText.text = text;
+    }
+
+    private void onFinish() {
+        string username = PlayerPrefs.GetString("Username");
+        
+        List<string[]> data = new List<string[]>
+        {
+            new string[] { username, computeScore()}
+        };
+
+        csvWriter.WriteToCSV("Rezultate.csv", data);
+    }
+
+    private string computeScore() {
+        float score = 100 - applesCollected * 10 - boatPartsWrong * 5;
+        Debug.Log("Score: " + score);
+        return score.ToString();
     }
 }

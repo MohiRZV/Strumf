@@ -55,10 +55,10 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         if (advanceToNextCheckpointFlag && (nextCheckpoint == 3 || nextCheckpoint == 4)) {// we need to move the boat
-            Debug.Log("move boat");
+            //Debug.Log("move boat");
             Rigidbody2D boatRb = GameObject.FindGameObjectWithTag("Boat").GetComponent<Rigidbody2D>();
             float dir = getMovementDir();
-            Debug.Log(dir);
+            //Debug.Log(dir);
             float shake = Random.Range(-0.2f, 0.2f);
             boatRb.velocity = new Vector2(getMovementDir() * walkSpeed, boatRb.velocity.y + shake);
             return;

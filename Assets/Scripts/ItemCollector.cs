@@ -13,7 +13,7 @@ public class ItemCollector : MonoBehaviour
         if (gameControllerObj == null) {
             gameControllerObj = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         }
-        Debug.Log("Collision "+collision.tag);
+        // Debug.Log("Collision "+collision.tag);
         // Send the collision object to the GameController if it is one of the desired collisions
         if (collision.tag == collectible.ToString()) {
             gameControllerObj.collected(collectible, collision.gameObject);

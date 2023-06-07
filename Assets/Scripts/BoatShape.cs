@@ -21,7 +21,7 @@ public class BoatShape : DragScript
         Vector3 position = this.transform.position;
         Vector3 targetPosition = boat.transform.position - squareOffset;
         Vector3 offset = targetPosition - position;
-        Debug.Log(position + " " + boat.transform.position + " " + targetPosition + " " + offset);
+        //Debug.Log(position + " " + boat.transform.position + " " + targetPosition + " " + offset);
         if (Mathf.Abs(offset.x) < tolerance && Mathf.Abs(offset.y) < tolerance) {
             setDragging(false);
             transform.position = targetPosition;
