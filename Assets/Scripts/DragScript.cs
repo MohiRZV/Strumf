@@ -26,4 +26,8 @@ public class DragScript : MonoBehaviour
         // stop dragging
         dragging = false;
     }
+
+    public void setDragging(bool isDragging) {
+        dragging = isDragging;
+    }
 }

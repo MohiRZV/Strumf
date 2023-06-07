@@ -10,6 +10,11 @@ TagManager:
   - Strawberry
   - Apple
   - RipeApple
+  - Junk
+  - BoatPartSquare
+  - BoatPartTriangle
+  - BoatPartCircle
+  - Boat
   layers:
   - Default
   - TransparentFX
