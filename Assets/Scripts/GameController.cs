@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     private bool reachedEnd = false;
 
     public CSVWriter csvWriter = new CSVWriter();
+    [SerializeField] private GameObject resetButton;
 
     [SerializeField] Text winText;
     [SerializeField] Text instructionText;
@@ -39,7 +40,11 @@ public class GameController : MonoBehaviour
     }
 
     void Start() {
+        // hide reset button
+        // TODO insert narration for storyline + apple task
+        resetButton.SetActive(false);
         playerMovement = player.GetComponent<PlayerMovement>();
+        // You can increase the 1 second delay to as much as the narration for the story lasts
         Invoke("advanceToNextCheckpoint",1);
         setInstruction("Prima data va fi nevoie sa culegi merele coapte de sub copac si sa le pui in cos!");
     }
@@ -73,13 +78,15 @@ public class GameController : MonoBehaviour
     }
 
     private void checkWinCnd() {
-        if (ripeAppleCollected >= ripeAppleWinCnd) {
+        if (ripeAppleCollected >= ripeAppleWinCnd) {// ripe apple task over
+            //TODO insert narration for the boat task
             advanceToNextCheckpoint();
             ripeAppleCollected = -1;
             setInstruction("Oh nu! Barca are niste piese lipsa! Pune-le la locul potrivit!");
         }
 
-        if (boatPartsPlaced >= boatPartsWinCnd) {
+        if (boatPartsPlaced >= boatPartsWinCnd) {//boat parts task over
+            //TODO insert narration for the junk task
             boatPartsPlaced = -1;
             setBoatPartsAsChild();
             advanceToNextCheckpoint();
@@ -87,14 +94,16 @@ public class GameController : MonoBehaviour
         }
 
         if (junkCollected >= junkWinCnd) {
-            junkCollected = -1;
+             //TODO insert narration for game finished
+            junkCollected = -1;//junk task over
             setInstruction("L-ai gasit pe prietenul tau! Felicitari!");
             player.transform.parent = null;
             player.transform.position = new Vector3(51f, 2f, 9f);
             reachedEnd = true;
         }
         
-        if (ripeAppleCollected== -1 && boatPartsPlaced == -1 && junkCollected == -1 && reachedEnd) {
+        if (ripeAppleCollected== -1 && boatPartsPlaced == -1 && junkCollected == -1 && reachedEnd) {// game finished
+            resetButton.SetActive(true);
             winText.text = "GG, esti un stroomph!";
             winText.enabled = true;
             onFinish();
