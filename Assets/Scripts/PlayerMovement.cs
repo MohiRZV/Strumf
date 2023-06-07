@@ -16,11 +16,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector3 checkPoint1;
     [SerializeField] private Vector3 checkPoint2;
     [SerializeField] private Vector3 checkPoint3;
+    [SerializeField] private Vector3 checkPoint4;
+    [SerializeField] private Vector3 checkPoint5;
 
     private Vector3[] checkpoints;
     private int checkpointCount; 
     private int nextCheckpoint = 1;
-    [SerializeField] private bool advanceToNextCheckpoint = false;
+    [SerializeField] private bool advanceToNextCheckpointFlag = false;
 
 
     float dirX = 0f;
@@ -45,13 +47,22 @@ public class PlayerMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         coll = GetComponent<BoxCollider2D>();
         transform.position = startPoint;
-        checkpoints = new Vector3[]{startPoint, checkPoint1, checkPoint2, checkPoint3};
+        checkpoints = new Vector3[]{startPoint, checkPoint1, checkPoint2, checkPoint3, checkPoint4, checkPoint5};
         checkpointCount = checkpoints.Length;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (advanceToNextCheckpointFlag && (nextCheckpoint == 3 || nextCheckpoint == 4)) {// we need to move the boat
+            Debug.Log("move boat");
+            Rigidbody2D boatRb = GameObject.FindGameObjectWithTag("Boat").GetComponent<Rigidbody2D>();
+            float dir = getMovementDir();
+            Debug.Log(dir);
+            float shake = Random.Range(-0.2f, 0.2f);
+            boatRb.velocity = new Vector2(getMovementDir() * walkSpeed, boatRb.velocity.y + shake);
+            return;
+        }
         // place the player back on the platform if it falls
         if (rb.transform.position.y < -10) {
             rb.transform.position = new Vector2(0, 0.2f);
@@ -79,16 +90,20 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private float getMovementDir() {
-        if (advanceToNextCheckpoint) {
+        if (advanceToNextCheckpointFlag) {
             if (transform.position.x - checkpoints[nextCheckpoint].x > 0) {//checkpoint reached
                 transform.position = new Vector3(checkpoints[nextCheckpoint].x, transform.position.y, transform.position.z);
                 nextCheckpoint++;
-                advanceToNextCheckpoint = false;
+                advanceToNextCheckpointFlag = false;
             } else {
                 return 1f;
             }
         }
         return 0f;
+    }
+
+    public void advanceToNextCheckpoint() {
+        advanceToNextCheckpointFlag = true;
     }
 
     private void UpdateAnimation(float dirX) {
