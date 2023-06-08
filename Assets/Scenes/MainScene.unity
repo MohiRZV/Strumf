@@ -44679,7 +44679,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   jumpForce: 14
-  walkSpeed: 1.9
+  walkSpeed: 1.65
   startPoint: {x: -14, y: 0, z: -9}
   checkPoint1: {x: 5, y: 0, z: 0}
   checkPoint2: {x: 22, y: 0, z: 0}
