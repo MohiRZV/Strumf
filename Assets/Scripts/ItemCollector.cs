@@ -15,8 +15,11 @@ public class ItemCollector : MonoBehaviour
         }
         // Debug.Log("Collision "+collision.tag);
         // Send the collision object to the GameController if it is one of the desired collisions
-        if (collision.tag == collectible.ToString()) {
+        if (collision.tag == collectible.ToString())
+        {
             gameControllerObj.collected(collectible, collision.gameObject);
+            AudioSource audio = GetComponent<AudioSource>();
+            audio.Play();
         }
         if (collision.tag == wrongCollectible.ToString()) {
             gameControllerObj.collected(wrongCollectible, collision.gameObject);

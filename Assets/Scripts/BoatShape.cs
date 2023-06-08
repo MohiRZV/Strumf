@@ -28,7 +28,10 @@ public class BoatShape : DragScript
             BoxCollider2D collider = this.GetComponent<BoxCollider2D>();
             collider.enabled = false;
             gameController.collected(GameController.Collectible.BoatPart, null);
-        } else {
+            AudioSource audio = GetComponent<AudioSource>();
+            audio.Play();
+        }
+        else {
             gameController.collected(GameController.Collectible.BoatPartWrong, null);
             transform.position = initialPosition;
         }
