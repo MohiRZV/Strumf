@@ -12,15 +12,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask jumpableGround;
     [SerializeField] private float jumpForce = 14f;
     [SerializeField] private float walkSpeed = 7f;
-    [SerializeField] private Vector3 startPoint = new Vector3(-14f, 0f, -9f);
-    [SerializeField] private Vector3 checkPoint1;
-    [SerializeField] private Vector3 checkPoint2;
-    [SerializeField] private Vector3 checkPoint3;
-    [SerializeField] private Vector3 checkPoint4;
-    [SerializeField] private Vector3 checkPoint5;
+    [SerializeField] private static Vector3 startPoint = new Vector3(-14f, 0f, -9f);
+    [SerializeField] private static Vector3 checkPoint1 = new Vector3(5f, 0f, 0f);
+    [SerializeField] private static Vector3 checkPoint2 = new Vector3(22f, 0f, 0f);
+    [SerializeField] private static Vector3 checkPoint3 = new Vector3(37f, 0f, 0f);
+    [SerializeField] private static Vector3 checkPoint4 = new Vector3(43f, 0f, 0f);
+    [SerializeField] private static Vector3 checkPoint5 = new Vector3(50.5f, 0f, 0f);
 
-    private Vector3[] checkpoints;
-    private int checkpointCount; 
+    private static Vector3[] checkpoints = new Vector3[]{startPoint, checkPoint1, checkPoint2, checkPoint3, checkPoint4, checkPoint5};
+    private int checkpointCount = checkpoints.Length; 
     private int nextCheckpoint = 1;
     [SerializeField] private bool advanceToNextCheckpointFlag = false;
 
@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         coll = GetComponent<BoxCollider2D>();
-        transform.position = startPoint;
+        Debug.Log("Start from playermovement");
         checkpoints = new Vector3[]{startPoint, checkPoint1, checkPoint2, checkPoint3, checkPoint4, checkPoint5};
         checkpointCount = checkpoints.Length;
     }
@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
             float dir = getMovementDir();
             //Debug.Log(dir);
             float shake = Random.Range(-0.2f, 0.2f);
-            boatRb.velocity = new Vector2(getMovementDir() * walkSpeed, boatRb.velocity.y + shake);
+            boatRb.velocity = new Vector2(getMovementDir() * walkSpeed, boatRb.velocity.y);
             return;
         }
         // place the player back on the platform if it falls
@@ -104,6 +104,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void advanceToNextCheckpoint() {
         advanceToNextCheckpointFlag = true;
+    }
+
+    public void placeToCheckpoint(int checkpoint) {
+        Debug.Log("Checkpoint no "+checkpoint);
+        nextCheckpoint = checkpoint+1;
+        transform.position = new Vector3(checkpoints[checkpoint].x, transform.position.y, transform.position.z);
     }
 
     private void UpdateAnimation(float dirX) {

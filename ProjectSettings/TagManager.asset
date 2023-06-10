@@ -15,6 +15,11 @@ TagManager:
   - BoatPartTriangle
   - BoatPartCircle
   - Boat
+  - Reset
+  - Wrong
+  - Right
+  - Banana
+  - Kiwi
   layers:
   - Default
   - TransparentFX
