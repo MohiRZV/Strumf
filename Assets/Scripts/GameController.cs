@@ -90,8 +90,6 @@ public class GameController : MonoBehaviour
     }
 
     void Start() {
-        // hide reset button
-        // TODO insert narration for storyline + apple task
         resetButton.SetActive(false);
         playerMovement = player.GetComponent<PlayerMovement>();
         hint = GameObject.Find("Hint");
@@ -181,7 +179,7 @@ public class GameController : MonoBehaviour
 
     private void checkWinCnd() {
         if (ripeAppleCollected >= ripeAppleWinCnd) {// ripe apple task over
-            //TODO insert narration for the boat task
+           
             advanceToNextCheckpoint();
             ripeAppleCollected = -1;
             hintNumber++;
@@ -196,7 +194,7 @@ public class GameController : MonoBehaviour
         }
 
         if (boatPartsPlaced >= boatPartsWinCnd) {//boat parts task over
-            //TODO insert narration for the junk task
+           
             boatPartsPlaced = -1;
             hintNumber++;
             setBoatPartsAsChild();
@@ -205,7 +203,7 @@ public class GameController : MonoBehaviour
         }
 
         if (junkCollected >= junkWinCnd) {
-             //TODO insert narration for game finished
+            
             junkCollected = -1;//junk task over
             hintNumber++;
             setInstruction("L-ai gasit pe prietenul tau! Felicitari!");
@@ -218,8 +216,6 @@ public class GameController : MonoBehaviour
             Debug.Log("Reached end!");
             resetButton.SetActive(true);
             GameObject.Find("Hint").SetActive(false);
-            // winText.text = "GG, esti un stroomph!";
-            // winText.enabled = true;
             onFinish();
         }
     }
@@ -304,9 +300,23 @@ public class GameController : MonoBehaviour
         fruitGenerator.canSpawn = false;
         MinigameAudioController.Instance.startVoice(Resources.Load<AudioClip>("Audio/minigame2"));
         minigame1.SetActive(false);
-        minigame2.SetActive(true);
+        StartCoroutine(WaitBeforeNext());
+        //minigame2.SetActive(true);
     }
+     IEnumerator WaitBeforeNext()
+    {
+        //Print the time of when the function is first called.
+        Debug.Log("Started Coroutine at timestamp : " + Time.time);
 
+        //yield on a new YieldInstruction that waits for 5 seconds.
+        yield return new WaitForSeconds(5);
+
+        //Start next mini game here after waiting 
+         minigame2.SetActive(true);
+
+        //After we have waited 5 seconds print the time again.
+        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
+    }
     private void startMinigame3() {
         MinigameAudioController.Instance.startVoice(Resources.Load<AudioClip>("Audio/minigame3"));
         minigame2.SetActive(false);

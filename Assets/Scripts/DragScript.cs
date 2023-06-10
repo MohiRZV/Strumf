@@ -13,6 +13,7 @@ public class DragScript : MonoBehaviour
         if(dragging) {
             // move the object
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + offset;
+            GetComponent<MoveObjectsBackToStart>().SetIsBeingDragged(true);
         }
     }
 
@@ -20,14 +21,17 @@ public class DragScript : MonoBehaviour
         // record the difference between the object's centre and the clicked point in the camera plane
         offset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
         dragging = true;
+        
     }
 
     private void OnMouseUp() {
         // stop dragging
         dragging = false;
+        GetComponent<MoveObjectsBackToStart>().SetIsBeingDragged(false);
     }
 
     public void setDragging(bool isDragging) {
         dragging = isDragging;
+        
     }
 }

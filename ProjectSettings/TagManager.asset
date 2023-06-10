@@ -20,6 +20,7 @@ TagManager:
   - Right
   - Banana
   - Kiwi
+  - VoiceOver1
   layers:
   - Default
   - TransparentFX

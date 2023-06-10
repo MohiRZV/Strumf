@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private bool enableKeyboardMovement = false;
     [SerializeField] private LayerMask jumpableGround;
-    [SerializeField] private float jumpForce = 14f;
     [SerializeField] private float walkSpeed = 7f;
     [SerializeField] private static Vector3 startPoint = new Vector3(-14f, 0f, -9f);
     [SerializeField] private static Vector3 checkPoint1 = new Vector3(5f, 0f, 0f);
@@ -30,9 +29,7 @@ public class PlayerMovement : MonoBehaviour
 
     private enum MovementState {
         IDLE,
-        RUNNING,
-        JUMPING,
-        FALLING
+        RUNNING
     }
 
     private SpriteRenderer spriteRenderer;
@@ -79,13 +76,6 @@ public class PlayerMovement : MonoBehaviour
         // move the player corresponding to the horizontal axis input, based on its walkspeed
         rb.velocity = new Vector2(dirX * walkSpeed, rb.velocity.y);
 
-        // when pressing the Jump button
-        if (enableKeyboardMovement && Input.GetButtonDown("Jump") && isGrounded()) 
-        {
-            // move the player on the vertical axis by its jumpForce
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        }
-
         UpdateAnimation(dirX);
     }
 
@@ -124,14 +114,6 @@ public class PlayerMovement : MonoBehaviour
         } else { // idle
             state = MovementState.IDLE;
         }
-
-        // check for jumping
-        if (rb.velocity.y > .1f) {// positive y velocity
-            state = MovementState.JUMPING;
-        } else if (rb.velocity.y < -.1f) {// negative y velocity
-            state = MovementState.FALLING;
-        }
-
         anim.SetInteger("state", (int)state);
     }
 

@@ -41,7 +41,7 @@ public class FruitGenerator : MonoBehaviour
     private void SpawnPrefab()
     {
          Vector3 randomOffset = new Vector3(
-            Random.Range(-7f, 7f),
+            Random.Range(-6f, 7f),
             0f,
             0f
         );

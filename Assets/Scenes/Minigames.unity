@@ -727,6 +727,7 @@ MonoBehaviour:
   prefabToSpawn: []
   spawnPoint: {fileID: 298134831}
   spawnInterval: 0.4
+  despawnHeight: -5
   canSpawn: 1
 --- !u!4 &298134831
 Transform:
