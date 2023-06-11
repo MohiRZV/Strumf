@@ -19,6 +19,7 @@ public class BasketDrag : MonoBehaviour
 
         Vector3 newPosition = new Vector3(initialPosition.x, initialPosition.y, initialPosition.z);
         newPosition.x = Camera.main.ScreenToWorldPoint(new Vector3(mouseX, mouseY, distanceToScreen)).x;
+        newPosition.x = Mathf.Clamp(newPosition.x, -8f, 9f);
 
         transform.position = newPosition;
     }

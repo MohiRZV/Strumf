@@ -298,7 +298,7 @@ public class GameController : MonoBehaviour
     private void startMinigame2() {
         FruitGenerator fruitGenerator =  GameObject.Find("FruitGenerator").GetComponent<FruitGenerator>();
         fruitGenerator.canSpawn = false;
-        MinigameAudioController.Instance.startVoice(Resources.Load<AudioClip>("Audio/minigame2"));
+        MinigameAudioController.Instance.startVoice(Resources.Load<AudioClip>("Audio/fb"));
         minigame1.SetActive(false);
         StartCoroutine(WaitBeforeNext());
         //minigame2.SetActive(true);
@@ -312,7 +312,8 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(5);
 
         //Start next mini game here after waiting 
-         minigame2.SetActive(true);
+        minigame2.SetActive(true);
+        MinigameAudioController.Instance.startVoice(Resources.Load<AudioClip>("Audio/minigame2"));
 
         //After we have waited 5 seconds print the time again.
         Debug.Log("Finished Coroutine at timestamp : " + Time.time);
