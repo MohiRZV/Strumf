@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BoatShape : DragScript
 {
-    GameController gameController;
+    GameController gameController = GameController.Instance;
     [SerializeField] GameObject boat;
     [SerializeField] Vector3 squareOffset = new Vector3(1.7f, 1.3f, 0.0f);
     [SerializeField] Vector3 initialPosition = new Vector3(0.5f, -1.6f, -0.5f);

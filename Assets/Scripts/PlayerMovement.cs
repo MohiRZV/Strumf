@@ -10,17 +10,16 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private bool enableKeyboardMovement = false;
     [SerializeField] private LayerMask jumpableGround;
-    [SerializeField] private float jumpForce = 14f;
     [SerializeField] private float walkSpeed = 7f;
-    [SerializeField] private Vector3 startPoint = new Vector3(-14f, 0f, -9f);
-    [SerializeField] private Vector3 checkPoint1;
-    [SerializeField] private Vector3 checkPoint2;
-    [SerializeField] private Vector3 checkPoint3;
-    [SerializeField] private Vector3 checkPoint4;
-    [SerializeField] private Vector3 checkPoint5;
+    [SerializeField] private static Vector3 startPoint = new Vector3(-14f, 0f, -9f);
+    [SerializeField] private static Vector3 checkPoint1 = new Vector3(5f, 0f, 0f);
+    [SerializeField] private static Vector3 checkPoint2 = new Vector3(22f, 0f, 0f);
+    [SerializeField] private static Vector3 checkPoint3 = new Vector3(37f, 0f, 0f);
+    [SerializeField] private static Vector3 checkPoint4 = new Vector3(43f, 0f, 0f);
+    [SerializeField] private static Vector3 checkPoint5 = new Vector3(50.5f, 0f, 0f);
 
-    private Vector3[] checkpoints;
-    private int checkpointCount; 
+    private static Vector3[] checkpoints = new Vector3[]{startPoint, checkPoint1, checkPoint2, checkPoint3, checkPoint4, checkPoint5};
+    private int checkpointCount = checkpoints.Length; 
     private int nextCheckpoint = 1;
     [SerializeField] private bool advanceToNextCheckpointFlag = false;
 
@@ -30,9 +29,7 @@ public class PlayerMovement : MonoBehaviour
 
     private enum MovementState {
         IDLE,
-        RUNNING,
-        JUMPING,
-        FALLING
+        RUNNING
     }
 
     private SpriteRenderer spriteRenderer;
@@ -46,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         coll = GetComponent<BoxCollider2D>();
-        transform.position = startPoint;
+        Debug.Log("Start from playermovement");
         checkpoints = new Vector3[]{startPoint, checkPoint1, checkPoint2, checkPoint3, checkPoint4, checkPoint5};
         checkpointCount = checkpoints.Length;
     }
@@ -60,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
             float dir = getMovementDir();
             //Debug.Log(dir);
             float shake = Random.Range(-0.2f, 0.2f);
-            boatRb.velocity = new Vector2(getMovementDir() * walkSpeed, boatRb.velocity.y + shake);
+            boatRb.velocity = new Vector2(getMovementDir() * walkSpeed, boatRb.velocity.y);
             return;
         }
         // place the player back on the platform if it falls
@@ -78,13 +75,6 @@ public class PlayerMovement : MonoBehaviour
 
         // move the player corresponding to the horizontal axis input, based on its walkspeed
         rb.velocity = new Vector2(dirX * walkSpeed, rb.velocity.y);
-
-        // when pressing the Jump button
-        if (enableKeyboardMovement && Input.GetButtonDown("Jump") && isGrounded()) 
-        {
-            // move the player on the vertical axis by its jumpForce
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        }
 
         UpdateAnimation(dirX);
     }
@@ -106,6 +96,12 @@ public class PlayerMovement : MonoBehaviour
         advanceToNextCheckpointFlag = true;
     }
 
+    public void placeToCheckpoint(int checkpoint) {
+        Debug.Log("Checkpoint no "+checkpoint);
+        nextCheckpoint = checkpoint+1;
+        transform.position = new Vector3(checkpoints[checkpoint].x, transform.position.y, transform.position.z);
+    }
+
     private void UpdateAnimation(float dirX) {
         MovementState state; 
 
@@ -118,14 +114,6 @@ public class PlayerMovement : MonoBehaviour
         } else { // idle
             state = MovementState.IDLE;
         }
-
-        // check for jumping
-        if (rb.velocity.y > .1f) {// positive y velocity
-            state = MovementState.JUMPING;
-        } else if (rb.velocity.y < -.1f) {// negative y velocity
-            state = MovementState.FALLING;
-        }
-
         anim.SetInteger("state", (int)state);
     }
 
